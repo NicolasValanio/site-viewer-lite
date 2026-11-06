@@ -1,0 +1,9 @@
+[
+  { "id": "s1", "name": "Lobby", "level": "Level 1", "use": "Circulation", "x": 0, "y": 0, "z": 0, "w": 8, "d": 6, "h": 3.2 },
+  { "id": "s2", "name": "Office 101", "level": "Level 1", "use": "Office", "x": 8, "y": 0, "z": 0, "w": 5, "d": 6, "h": 3.2 },
+  { "id": "s3", "name": "Kitchen", "level": "Level 1", "use": "Kitchen", "x": 0, "y": 6, "z": 0, "w": 6, "d": 4, "h": 3.2 },
+  { "id": "s4", "name": "Storage", "level": "Level 1", "use": "Storage", "x": 6, "y": 6, "z": 0, "w": 7, "d": 4, "h": 3.2 },
+  { "id": "s5", "name": "Conference A", "level": "Level 2", "use": "Meeting", "x": 0, "y": 0, "z": 3.2, "w": 7, "d": 5, "h": 3 },
+  { "id": "s6", "name": "Office 201", "level": "Level 2", "use": "Office", "x": 7, "y": 0, "z": 3.2, "w": 6, "d": 5, "h": 3 },
+  { "id": "s7", "name": "Open Plan", "level": "Level 2", "use": "Office", "x": 0, "y": 5, "z": 3.2, "w": 13, "d": 5, "h": 3 }
+]

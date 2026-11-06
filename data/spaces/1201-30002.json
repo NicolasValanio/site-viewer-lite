@@ -1,0 +1,5 @@
+[
+  { "id": "w1", "name": "Warehouse Floor", "level": "Ground", "use": "Industrial", "x": 0, "y": 0, "z": 0, "w": 30, "d": 18, "h": 8 },
+  { "id": "w2", "name": "Loading Dock", "level": "Ground", "use": "Industrial", "x": 30, "y": 0, "z": 0, "w": 6, "d": 18, "h": 6 },
+  { "id": "w3", "name": "Office", "level": "Ground", "use": "Office", "x": 0, "y": 18, "z": 0, "w": 10, "d": 6, "h": 3 }
+]

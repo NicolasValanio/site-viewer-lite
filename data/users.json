@@ -1,0 +1,5 @@
+[
+  { "token": "staff-token", "name": "Dana Ortiz", "role": "staff" },
+  { "token": "acme-token", "name": "Sam Lee", "role": "client", "account": "acme" },
+  { "token": "brick-token", "name": "Rita Gomez", "role": "client", "account": "brick" }
+]

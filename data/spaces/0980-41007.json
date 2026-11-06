@@ -1,0 +1,7 @@
+[
+  { "id": "b1", "name": "Unit 1A", "level": "Level 1", "use": "Residential", "x": 0, "y": 0, "z": 0, "w": 9, "d": 7, "h": 3 },
+  { "id": "b2", "name": "Unit 1B", "level": "Level 1", "use": "Residential", "x": 9, "y": 0, "z": 0, "w": 9, "d": 7, "h": 3 },
+  { "id": "b3", "name": "Unit 2A", "level": "Level 2", "use": "Residential", "x": 0, "y": 0, "z": 3, "w": 9, "d": 7, "h": 3 },
+  { "id": "b4", "name": "Unit 2B", "level": "Level 2", "use": "Residential", "x": 9, "y": 0, "z": 3, "w": 9, "d": 7, "h": 3 },
+  { "id": "b5", "name": "Roof Deck", "level": "Roof", "use": "Amenity", "x": 0, "y": 0, "z": 6, "w": 18, "d": 7, "h": 0.3 }
+]

@@ -1,0 +1,38 @@
+[
+  {
+    "id": "1201-30001",
+    "name": "410 Harbor Ave",
+    "address": "410 Harbor Ave, Oakland, CA",
+    "account": "acme",
+    "client": { "name": "Acme Builders", "contacts": [{ "role": "primary", "name": "Sam Lee", "email": "sam@acme.example", "phone": "+1 510 555 0101" }] },
+    "status": "In production",
+    "dates": { "signed": "2026-08-04", "scan": "2026-08-19", "estimatedDelivery": "2026-09-30", "delivered": null },
+    "levels": ["Level 1", "Level 2"],
+    "cloud": "1201-30001.pts",
+    "internal": { "price": 18400, "invoice": "INV-2208-1", "margin": 0.41, "notes": "Client asked for a discount on the second pay." }
+  },
+  {
+    "id": "1201-30002",
+    "name": "77 Mill St Warehouse",
+    "address": "77 Mill St, Fremont, CA",
+    "account": "acme",
+    "client": { "name": "Acme Builders", "contacts": [{ "role": "primary", "name": "Sam Lee", "email": "sam@acme.example", "phone": "+1 510 555 0101" }] },
+    "status": "Delivered",
+    "dates": { "signed": "2026-03-02", "scan": "2026-03-10", "estimatedDelivery": "2026-04-15", "delivered": "2026-04-11" },
+    "levels": ["Ground"],
+    "cloud": "1201-30002.pts",
+    "internal": { "price": 9200, "invoice": "INV-2203-7", "margin": 0.36, "notes": "" }
+  },
+  {
+    "id": "0980-41007",
+    "name": "Brickyard Lofts",
+    "address": "12 Kiln Rd, Austin, TX",
+    "account": "brick",
+    "client": { "name": "Brick & Co", "contacts": [{ "role": "primary", "name": "Rita Gomez", "email": "rita@brick.example", "phone": "+1 512 555 0177" }] },
+    "status": "Scheduled",
+    "dates": { "signed": "2026-10-20", "scan": null, "estimatedDelivery": null, "delivered": null },
+    "levels": ["Level 1", "Level 2", "Roof"],
+    "cloud": null,
+    "internal": { "price": 31500, "invoice": "INV-2210-2", "margin": 0.44, "notes": "Large account, handle with care." }
+  }
+]
