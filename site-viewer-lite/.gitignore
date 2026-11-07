@@ -1,0 +1,8 @@
+node_modules/
+frontend/dist/
+coverage/
+data/clouds/*.pts
+!data/clouds/.gitkeep
+.env
+.env.*
+*.log

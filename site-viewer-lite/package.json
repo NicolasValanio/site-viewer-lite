@@ -1,0 +1,15 @@
+{
+  "name": "site-viewer-lite",
+  "version": "0.1.0",
+  "private": true,
+  "engines": {
+    "node": ">=20.19.0 <25"
+  },
+  "scripts": {
+    "start": "node backend/app.js",
+    "dev:api": "node --watch backend/app.js"
+  },
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}
