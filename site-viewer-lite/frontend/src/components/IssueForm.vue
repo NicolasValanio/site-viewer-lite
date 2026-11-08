@@ -3,11 +3,12 @@ import { computed, ref, watch } from 'vue';
 
 const props = defineProps({
   project: { type: Object, required: true },
+  selectedSpaceId: { type: String, default: '' },
   spaces: { type: Array, required: true },
   submitting: Boolean
 });
 
-const emit = defineEmits(['submit']);
+const emit = defineEmits(['submit', 'update:selectedSpaceId']);
 const title = ref('');
 const level = ref('');
 const spaceId = ref('');
@@ -26,6 +27,27 @@ watch(
 watch(level, () => {
   if (!spacesForLevel.value.some((space) => space.id === spaceId.value)) {
     spaceId.value = '';
+  }
+});
+
+watch(
+  () => props.selectedSpaceId,
+  (selectedSpaceId) => {
+    const selectedSpace = props.spaces.find((space) => space.id === selectedSpaceId);
+
+    if (selectedSpace) {
+      level.value = selectedSpace.level;
+      spaceId.value = selectedSpace.id;
+    } else if (!selectedSpaceId) {
+      spaceId.value = '';
+    }
+  },
+  { immediate: true }
+);
+
+watch(spaceId, (nextSpaceId) => {
+  if (nextSpaceId !== props.selectedSpaceId) {
+    emit('update:selectedSpaceId', nextSpaceId);
   }
 });
 

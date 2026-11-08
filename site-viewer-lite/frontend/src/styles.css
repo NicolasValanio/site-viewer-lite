@@ -101,7 +101,6 @@ h3 {
 }
 
 .card,
-.viewer-placeholder,
 .empty-state,
 .error-message,
 .success-message {
@@ -152,6 +151,11 @@ button:focus-visible {
 .workspace {
   grid-template-columns: minmax(0, 1.4fr) minmax(300px, 0.85fr);
   align-items: start;
+}
+
+.project-workspace {
+  display: grid;
+  gap: 20px;
 }
 
 .side-column {
@@ -250,18 +254,98 @@ dd {
   overflow-wrap: anywhere;
 }
 
-.viewer-placeholder {
+.space-viewer {
   display: grid;
-  gap: 5px;
-  min-height: 130px;
-  border: 1px dashed #9fb3c8;
-  background: linear-gradient(135deg, #eaf3fb, #f8fbff);
-  color: #486581;
-  padding: 20px;
+  gap: 16px;
 }
 
-.viewer-placeholder strong {
-  color: #102a43;
+.space-viewer-header {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.space-viewer-header h2 {
+  margin-bottom: 0;
+}
+
+.level-filter {
+  min-width: min(100%, 210px);
+}
+
+.level-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 14px;
+  color: #486581;
+  font-size: 0.88rem;
+}
+
+.level-legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.level-legend i {
+  width: 12px;
+  height: 12px;
+  border-radius: 999px;
+}
+
+.space-viewer-stage {
+  position: relative;
+  min-height: 420px;
+  overflow: hidden;
+  border: 1px solid #bcccdc;
+  border-radius: 12px;
+  background: #eaf3fb;
+}
+
+.space-viewer-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  outline: none;
+  touch-action: none;
+}
+
+.viewer-error {
+  padding: 24px;
+  color: #742a2a;
+}
+
+.space-info-panel {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 16px;
+  align-items: end;
+  min-height: 84px;
+  border: 1px solid #d9e2ec;
+  border-radius: 12px;
+  background: #f8fbff;
+  padding: 16px;
+}
+
+.space-info-panel h3,
+.space-info-panel p {
+  margin-bottom: 0;
+}
+
+.space-info-panel dl {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 28px;
+  margin: 10px 0 0;
+}
+
+.space-info-panel dd {
+  margin-top: 2px;
+}
+
+.unit-button {
+  min-width: 104px;
 }
 
 .empty-state {
@@ -289,7 +373,8 @@ dd {
   .app-header,
   .controls,
   .workspace,
-  .error-message {
+  .error-message,
+  .space-info-panel {
     grid-template-columns: 1fr;
   }
 
@@ -299,5 +384,14 @@ dd {
 
   .details-grid {
     grid-template-columns: 1fr;
+  }
+
+  .space-viewer-header {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .space-viewer-stage {
+    min-height: 340px;
   }
 }

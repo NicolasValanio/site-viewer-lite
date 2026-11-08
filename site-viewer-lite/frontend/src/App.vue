@@ -1,9 +1,10 @@
 <script setup>
-import { onMounted } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import ErrorMessage from './components/ErrorMessage.vue';
 import IssueForm from './components/IssueForm.vue';
 import ProjectDetails from './components/ProjectDetails.vue';
 import ProjectPicker from './components/ProjectPicker.vue';
+import SpaceViewer from './components/SpaceViewer.vue';
 import TokenPicker from './components/TokenPicker.vue';
 import { useSiteViewer, viewerProfiles } from './composables/useSiteViewer';
 
@@ -24,6 +25,15 @@ const {
   spaces,
   submitIssue
 } = useSiteViewer();
+
+const selectedSpaceId = ref('');
+
+watch(
+  () => project.value?.id,
+  () => {
+    selectedSpaceId.value = '';
+  }
+);
 
 onMounted(loadProjects);
 </script>
@@ -53,18 +63,29 @@ onMounted(loadProjects);
 
     <p v-if="isLoadingProject" class="loading-message" role="status">Loading project details…</p>
 
-    <section v-else-if="project" class="workspace">
-      <ProjectDetails :project="project" />
-      <div class="side-column">
-        <IssueForm :project="project" :spaces="spaces" :submitting="isSubmittingIssue" @submit="submitIssue" />
-        <p v-if="issueSuccessId" class="success-message" role="status">
-          Issue report created: <code>{{ issueSuccessId }}</code>
-        </p>
-        <section class="viewer-placeholder" aria-label="3D viewer placeholder">
-          <strong>3D viewer</strong>
-          <span>The interactive model will be available in the next phase.</span>
-        </section>
+    <section v-else-if="project" class="project-workspace">
+      <div class="workspace">
+        <ProjectDetails :project="project" />
+        <div class="side-column">
+          <IssueForm
+            :project="project"
+            :selected-space-id="selectedSpaceId"
+            :spaces="spaces"
+            :submitting="isSubmittingIssue"
+            @submit="submitIssue"
+            @update:selected-space-id="selectedSpaceId = $event"
+          />
+          <p v-if="issueSuccessId" class="success-message" role="status">
+            Issue report created: <code>{{ issueSuccessId }}</code>
+          </p>
+        </div>
       </div>
+      <SpaceViewer
+        :project="project"
+        :selected-space-id="selectedSpaceId"
+        :spaces="spaces"
+        @update:selected-space-id="selectedSpaceId = $event"
+      />
     </section>
 
     <section v-else class="empty-state">
