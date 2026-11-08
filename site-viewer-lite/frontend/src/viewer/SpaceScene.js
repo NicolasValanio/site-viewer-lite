@@ -23,6 +23,10 @@ export class SpaceScene {
     this.selectedSpaceId = '';
     this.meshes = new Map();
     this.levelColors = new Map();
+    this.pointCloud = null;
+    this.spaceBounds = null;
+    this.animationFrame = null;
+    this.disposed = false;
     this.pointer = new THREE.Vector2();
     this.raycaster = new THREE.Raycaster();
     this.pointerStart = null;
@@ -33,16 +37,15 @@ export class SpaceScene {
     this.camera = new THREE.PerspectiveCamera(45, 1, 0.01, 1000);
     this.camera.up.set(0, 0, 1);
 
-    this.renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: 'high-performance' });
-    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    this.renderer = new THREE.WebGLRenderer({ antialias: false, powerPreference: 'high-performance' });
+    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.25));
     this.renderer.outputColorSpace = THREE.SRGBColorSpace;
     this.renderer.domElement.className = 'space-viewer-canvas';
     this.renderer.domElement.setAttribute('aria-label', 'Interactive 3D space viewer');
     this.container.replaceChildren(this.renderer.domElement);
 
     this.controls = new OrbitControls(this.camera, this.renderer.domElement);
-    this.controls.enableDamping = true;
-    this.controls.dampingFactor = 0.08;
+    this.controls.enableDamping = false;
     this.controls.screenSpacePanning = true;
     this.controls.touches.ONE = THREE.TOUCH.ROTATE;
     this.controls.touches.TWO = THREE.TOUCH.DOLLY_PAN;
@@ -54,13 +57,16 @@ export class SpaceScene {
 
     this.handlePointerDown = this.handlePointerDown.bind(this);
     this.handlePointerUp = this.handlePointerUp.bind(this);
+    this.renderFrame = this.renderFrame.bind(this);
+    this.requestRender = this.requestRender.bind(this);
     this.renderer.domElement.addEventListener('pointerdown', this.handlePointerDown);
     this.renderer.domElement.addEventListener('pointerup', this.handlePointerUp);
+    this.controls.addEventListener('change', this.requestRender);
 
     this.resizeObserver = new ResizeObserver(() => this.resize());
     this.resizeObserver.observe(this.container);
     this.resize();
-    this.animate();
+    this.requestRender();
   }
 
   addLights() {
@@ -120,6 +126,7 @@ export class SpaceScene {
     });
 
     this.fitCamera(bounds);
+    this.spaceBounds = bounds.clone();
     this.applyVisibility();
   }
 
@@ -131,6 +138,46 @@ export class SpaceScene {
 
     this.meshes.clear();
     this.selectedSpaceId = '';
+    this.spaceBounds = null;
+  }
+
+  setPointCloud({ colors, positions, spacing }) {
+    this.clearPointCloud();
+
+    const geometry = new THREE.BufferGeometry();
+    geometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array(positions), 3));
+    geometry.setAttribute('color', new THREE.Uint8BufferAttribute(new Uint8Array(colors), 3, true));
+
+    const material = new THREE.PointsMaterial({
+      depthWrite: false,
+      opacity: 0.82,
+      size: Math.max(spacing || 0.02, 0.01),
+      sizeAttenuation: true,
+      transparent: true,
+      vertexColors: true
+    });
+
+    this.pointCloud = new THREE.Points(geometry, material);
+    if (this.spaceBounds) {
+      const cloudBounds = this.spaceBounds.clone().expandByScalar(0.05);
+      geometry.boundingSphere = cloudBounds.getBoundingSphere(new THREE.Sphere());
+      this.pointCloud.frustumCulled = true;
+    } else {
+      this.pointCloud.frustumCulled = false;
+    }
+    this.root.add(this.pointCloud);
+    this.requestRender();
+  }
+
+  clearPointCloud() {
+    if (!this.pointCloud) {
+      return;
+    }
+
+    this.root.remove(this.pointCloud);
+    disposeObject(this.pointCloud);
+    this.pointCloud = null;
+    this.requestRender();
   }
 
   setLevelFilter(level) {
@@ -156,6 +203,8 @@ export class SpaceScene {
       mesh.material.emissive.setHex(selected ? 0x3b82f6 : 0x000000);
       mesh.material.emissiveIntensity = selected ? 0.35 : 0;
     }
+
+    this.requestRender();
   }
 
   setSelectedSpace(spaceId, emitSelection = false) {
@@ -216,19 +265,32 @@ export class SpaceScene {
     this.camera.aspect = width / height;
     this.camera.updateProjectionMatrix();
     this.renderer.setSize(width, height, false);
+    this.requestRender();
   }
 
-  animate() {
-    this.animationFrame = window.requestAnimationFrame(() => this.animate());
-    this.controls.update();
+  requestRender() {
+    if (!this.disposed && this.animationFrame === null) {
+      this.animationFrame = window.requestAnimationFrame(this.renderFrame);
+    }
+  }
+
+  renderFrame() {
+    this.animationFrame = null;
     this.renderer.render(this.scene, this.camera);
   }
 
   dispose() {
-    window.cancelAnimationFrame(this.animationFrame);
+    this.disposed = true;
+
+    if (this.animationFrame !== null) {
+      window.cancelAnimationFrame(this.animationFrame);
+      this.animationFrame = null;
+    }
     this.resizeObserver.disconnect();
     this.renderer.domElement.removeEventListener('pointerdown', this.handlePointerDown);
     this.renderer.domElement.removeEventListener('pointerup', this.handlePointerUp);
+    this.controls.removeEventListener('change', this.requestRender);
+    this.clearPointCloud();
     this.clearSpaces();
     disposeObject(this.grid);
     disposeObject(this.axes);

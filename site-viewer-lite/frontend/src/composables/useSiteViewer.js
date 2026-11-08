@@ -173,6 +173,7 @@ export function useSiteViewer() {
     selectProfile,
     selectedProjectId,
     spaces,
+    token,
     submitIssue
   };
 }

@@ -263,7 +263,18 @@ dd {
   display: flex;
   align-items: end;
   justify-content: space-between;
+  flex-wrap: wrap;
   gap: 16px;
+}
+
+.viewer-toolbar {
+  display: flex;
+  align-items: end;
+  flex: 0 1 400px;
+  gap: 12px;
+  justify-content: flex-end;
+  max-width: 100%;
+  min-width: 0;
 }
 
 .space-viewer-header h2 {
@@ -271,7 +282,15 @@ dd {
 }
 
 .level-filter {
-  min-width: min(100%, 210px);
+  flex: 1 1 210px;
+  min-width: 0;
+}
+
+.cloud-button {
+  flex: 1 1 160px;
+  max-width: 100%;
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 
 .level-legend {
@@ -313,6 +332,40 @@ dd {
 
 .viewer-error {
   padding: 24px;
+  color: #742a2a;
+}
+
+.cloud-load-status {
+  display: grid;
+  gap: 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 12px;
+  background: #f8fbff;
+  color: #243b53;
+  padding: 14px 16px;
+}
+
+.cloud-load-status p {
+  margin: 0;
+}
+
+.cloud-load-status strong {
+  display: block;
+  font-size: 0.9rem;
+}
+
+.cloud-load-status progress {
+  width: 100%;
+  height: 10px;
+  margin-top: 7px;
+  accent-color: #1769aa;
+}
+
+.cloud-error {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
   color: #742a2a;
 }
 
@@ -389,6 +442,17 @@ dd {
   .space-viewer-header {
     align-items: stretch;
     flex-direction: column;
+  }
+
+  .viewer-toolbar,
+  .cloud-error {
+    align-items: stretch;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .cloud-button {
+    width: 100%;
   }
 
   .space-viewer-stage {

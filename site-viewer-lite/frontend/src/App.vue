@@ -6,6 +6,7 @@ import ProjectDetails from './components/ProjectDetails.vue';
 import ProjectPicker from './components/ProjectPicker.vue';
 import SpaceViewer from './components/SpaceViewer.vue';
 import TokenPicker from './components/TokenPicker.vue';
+import { usePointCloud } from './composables/usePointCloud';
 import { useSiteViewer, viewerProfiles } from './composables/useSiteViewer';
 
 const {
@@ -23,8 +24,19 @@ const {
   selectProfile,
   selectedProjectId,
   spaces,
+  token,
   submitIssue
 } = useSiteViewer();
+
+const {
+  cancel: cancelPointCloud,
+  error: pointCloudError,
+  load: loadPointCloud,
+  pointCloud,
+  progress: pointCloudProgress,
+  retry: retryPointCloud,
+  state: pointCloudState
+} = usePointCloud();
 
 const selectedSpaceId = ref('');
 
@@ -32,8 +44,15 @@ watch(
   () => project.value?.id,
   () => {
     selectedSpaceId.value = '';
+    cancelPointCloud();
   }
 );
+
+function requestPointCloud() {
+  if (project.value && token.value) {
+    loadPointCloud({ projectId: project.value.id, token: token.value });
+  }
+}
 
 onMounted(loadProjects);
 </script>
@@ -81,9 +100,16 @@ onMounted(loadProjects);
         </div>
       </div>
       <SpaceViewer
+        :cloud-error="pointCloudError"
+        :cloud-progress="pointCloudProgress"
+        :cloud-state="pointCloudState"
+        :point-cloud="pointCloud"
         :project="project"
         :selected-space-id="selectedSpaceId"
         :spaces="spaces"
+        @cancel-cloud="cancelPointCloud"
+        @load-cloud="requestPointCloud"
+        @retry-cloud="retryPointCloud"
         @update:selected-space-id="selectedSpaceId = $event"
       />
     </section>
