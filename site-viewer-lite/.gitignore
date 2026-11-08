@@ -6,4 +6,3 @@ data/clouds/*.pts
 .env
 .env.*
 *.log
-tests
