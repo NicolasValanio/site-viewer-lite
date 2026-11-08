@@ -1,0 +1,75 @@
+<script setup>
+import { onMounted } from 'vue';
+import ErrorMessage from './components/ErrorMessage.vue';
+import IssueForm from './components/IssueForm.vue';
+import ProjectDetails from './components/ProjectDetails.vue';
+import ProjectPicker from './components/ProjectPicker.vue';
+import TokenPicker from './components/TokenPicker.vue';
+import { useSiteViewer, viewerProfiles } from './composables/useSiteViewer';
+
+const {
+  error,
+  isLoadingProject,
+  isLoadingProjects,
+  isSubmittingIssue,
+  issueSuccessId,
+  loadProject,
+  loadProjects,
+  profileId,
+  project,
+  projects,
+  retry,
+  selectProfile,
+  selectedProjectId,
+  spaces,
+  submitIssue
+} = useSiteViewer();
+
+onMounted(loadProjects);
+</script>
+
+<template>
+  <main class="app-shell">
+    <header class="app-header">
+      <div>
+        <p class="eyebrow">Secure project access</p>
+        <h1>Site Viewer Lite</h1>
+      </div>
+      <p class="header-note">Project data and issue reporting</p>
+    </header>
+
+    <section class="card controls" aria-label="Project controls">
+      <TokenPicker :model-value="profileId" :profiles="viewerProfiles" @update:model-value="selectProfile" />
+      <ProjectPicker
+        :disabled="!projects.length"
+        :loading="isLoadingProjects"
+        :model-value="selectedProjectId"
+        :projects="projects"
+        @update:model-value="loadProject"
+      />
+    </section>
+
+    <ErrorMessage v-if="error" :message="error" @retry="retry" />
+
+    <p v-if="isLoadingProject" class="loading-message" role="status">Loading project details…</p>
+
+    <section v-else-if="project" class="workspace">
+      <ProjectDetails :project="project" />
+      <div class="side-column">
+        <IssueForm :project="project" :spaces="spaces" :submitting="isSubmittingIssue" @submit="submitIssue" />
+        <p v-if="issueSuccessId" class="success-message" role="status">
+          Issue report created: <code>{{ issueSuccessId }}</code>
+        </p>
+        <section class="viewer-placeholder" aria-label="3D viewer placeholder">
+          <strong>3D viewer</strong>
+          <span>The interactive model will be available in the next phase.</span>
+        </section>
+      </div>
+    </section>
+
+    <section v-else class="empty-state">
+      <h2>Select a project</h2>
+      <p>Choose a user and project to review its details and report an issue.</p>
+    </section>
+  </main>
+</template>

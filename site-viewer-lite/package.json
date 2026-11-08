@@ -6,16 +6,23 @@
     "node": ">=20.19.0 <25"
   },
   "scripts": {
+    "dev": "concurrently -k -n api,web \"npm:dev:api\" \"npm:dev:web\"",
     "start": "node backend/app.js",
     "dev:api": "node --watch backend/app.js",
+    "dev:web": "vite --config frontend/vite.config.mjs",
+    "build": "vite build --config frontend/vite.config.mjs",
     "test": "vitest run",
     "test:watch": "vitest"
   },
   "dependencies": {
-    "express": "^5.1.0"
+    "express": "^5.1.0",
+    "vue": "^3.5.22"
   },
   "devDependencies": {
+    "@vitejs/plugin-vue": "^6.0.1",
+    "concurrently": "^9.2.1",
     "supertest": "^7.1.4",
+    "vite": "^7.1.7",
     "vitest": "^3.2.4"
   }
 }
