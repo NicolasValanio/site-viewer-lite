@@ -1,0 +1,18 @@
+[build]
+  base = "site-viewer-lite"
+  command = "node tools/make-cloud.js 1201-30001 200000 && npm run build"
+  publish = "frontend/dist"
+
+[build.environment]
+  NODE_VERSION = "24"
+
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "nft"
+  included_files = ["data/**/*.json", "data/clouds/1201-30001.pts"]
+
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/api/:splat"
+  status = 200
+  force = true

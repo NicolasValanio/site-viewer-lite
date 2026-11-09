@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "express": "^5.1.0",
+    "serverless-http": "3.2.0",
     "three": "^0.180.0",
     "vue": "^3.5.22"
   },
