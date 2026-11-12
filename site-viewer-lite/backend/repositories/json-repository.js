@@ -1,7 +1,7 @@
 const fs = require('node:fs/promises');
 const path = require('node:path');
 
-const dataDirectory = path.resolve(__dirname, '../../data');
+const dataDirectory = process.env.SITE_VIEWER_DATA_DIRECTORY || path.resolve(__dirname, '../../data');
 
 async function readJson(...segments) {
   const filePath = path.resolve(dataDirectory, ...segments);
