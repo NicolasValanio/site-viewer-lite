@@ -1,0 +1,22 @@
+[build]
+  base = "site-viewer-lite"
+  command = "npm run build:netlify"
+  publish = "frontend/dist"
+
+[build.environment]
+  NODE_VERSION = "24"
+
+[functions]
+  directory = "netlify/functions"
+  included_files = ["data/**"]
+
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/api/:splat"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

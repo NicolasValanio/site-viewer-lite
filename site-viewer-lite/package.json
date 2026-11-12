@@ -12,10 +12,12 @@
     "dev:web": "vite --config frontend/vite.config.mjs",
     "build": "vite build --config frontend/vite.config.mjs",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "build:netlify": "node tools/make-cloud.js 1201-30001 100000 && node tools/make-cloud.js 1201-30002 100000 && npm run build"
   },
   "dependencies": {
     "express": "^5.1.0",
+    "serverless-http": "^4.0.0",
     "three": "^0.180.0",
     "vue": "^3.5.22"
   },
